@@ -6,7 +6,10 @@ import { AuthProvider } from "@/context/AuthContext";
 import { ProductProvider } from "@/context/ProductContext";
 import { CartProvider } from "@/context/CartContext";
 import { OrderProvider } from "@/context/OrderContext";
+import { CompareProvider } from "@/context/CompareContext";
 import CartDrawer from "@/components/CartDrawer";
+import CompareFloatingBar from "@/components/CompareFloatingBar";
+import CompareModal from "@/components/CompareModal";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -15,8 +18,12 @@ export function Providers({ children }: { children: React.ReactNode }) {
         <ProductProvider>
           <OrderProvider>
             <CartProvider>
-              {children}
-              <CartDrawer />
+              <CompareProvider>
+                {children}
+                <CartDrawer />
+                <CompareFloatingBar />
+                <CompareModal />
+              </CompareProvider>
             </CartProvider>
           </OrderProvider>
         </ProductProvider>

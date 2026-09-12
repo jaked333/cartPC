@@ -38,6 +38,11 @@
   - Category-specific attribute filtering (e.g. Mouse Type: Wired / Wireless).
 - **Multi-Option Sorting**: Sort products by price (Low to High, High to Low), newest arrivals, or best-sellers.
 - **Detailed Product Modal**: Click any product card to view a dedicated modal showing high-definition imagery, full technical specifications table, stock availability status, and pricing breakdown.
+- **Side-by-Side Product Compare (เปรียบเทียบสเปกสินค้า)**:
+  - Select 2 to 4 items in the same category (e.g. CPU vs CPU, GPU vs GPU) to compare side-by-side.
+  - Floating bottom toolbar with thumbnail previews and quick remove buttons.
+  - Interactive comparison table modal dynamically extracting all unique specification keys.
+  - One-click toggling directly on product cards with instant category constraint protection.
 - **Live Cart Drawer**:
   - Slide-out cart panel showing running totals, item counts, and quick quantity increments/decrements.
   - Smooth slide animations and empty-state guidance.
@@ -103,6 +108,8 @@ You can use these pre-seeded accounts to explore both roles:
 
 ### 1. Clone the repository
 ```bash
+git clone https://github.com/<your-username>/shopcon11.git
+cd shopcon11
 git clone https://github.com/jaked333/cartPC.git
 cd cartPC
 ```
@@ -142,17 +149,20 @@ shopcon11/
 ├── components/
 │   ├── CartDrawer.tsx      # Slide-out shopping cart & checkout modal
 │   ├── CategorySidebar.tsx # Category navigation with active state
+│   ├── CompareFloatingBar.tsx # Floating bottom bar with thumbnail selection
+│   ├── CompareModal.tsx    # Side-by-side technical spec comparison table modal
 │   ├── EditProductModal.tsx# Admin live product rename & price adjust modal
 │   ├── Icons.tsx           # Handcrafted SVG icons with dark mode support
 │   ├── LogoutConfirmModal.tsx # Sign-out confirmation dialog
 │   ├── Navbar.tsx          # Top bar (Search, Theme switch, Cart badge, Auth)
-│   ├── ProductCard.tsx     # Product card with badges, price, and actions
+│   ├── ProductCard.tsx     # Product card with compare toggle, badges, and actions
 │   ├── ProductDetailModal.tsx # Detailed product specs & preview modal
 │   ├── ProductFilters.tsx  # Filter chips (Brand & attribute filters)
 │   └── Providers.tsx       # Unified context provider wrapper
 ├── context/
 │   ├── AuthContext.tsx     # Role-based user state & demo auth
 │   ├── CartContext.tsx     # Cart storage & item manipulation
+│   ├── CompareContext.tsx  # Product comparison state & category validator
 │   ├── OrderContext.tsx    # Order pipeline & status management
 │   ├── ProductContext.tsx  # Live product catalog & pricing updater
 │   └── ThemeContext.tsx    # Dark/Light mode provider with persistence
@@ -185,6 +195,8 @@ git commit -m "feat: complete PC Parts E-Commerce & Management System"
 # 4. Rename branch to main
 git branch -M main
 
+# 5. Add your GitHub remote repository (replace with your GitHub repo URL)
+git remote add origin https://github.com/<YOUR_USERNAME>/<YOUR_REPOSITORY_NAME>.git
 # 5. Add your GitHub remote repository
 git remote add origin https://github.com/jaked333/cartPC.git
 

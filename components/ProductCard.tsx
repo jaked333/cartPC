@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { Product } from "@/types";
 import { useCart } from "@/context/CartContext";
-import { PlusIcon, CheckIcon, EditIcon } from "./Icons";
+import { useCompare } from "@/context/CompareContext";
+import { PlusIcon, CheckIcon, EditIcon, CompareIcon } from "./Icons";
 
 interface ProductCardProps {
   product: Product;
@@ -17,8 +18,11 @@ interface ProductCardProps {
 export default function ProductCard({ product, brandName, onSelect, onEdit }: ProductCardProps) {
   const { addItem } = useCart();
   const { user } = useAuth();
+  const { isInCompare, toggleCompare } = useCompare();
   const router = useRouter();
   const [justAdded, setJustAdded] = useState(false);
+
+  const inCompare = isInCompare(product.id);
 
   const handleAdd = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -82,6 +86,24 @@ export default function ProductCard({ product, brandName, onSelect, onEdit }: Pr
               {brandName}
             </div>
           )}
+
+          {/* Compare Button */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleCompare(product);
+            }}
+            title={inCompare ? "นำออกจากการเปรียบเทียบ" : "เพิ่มเพื่อเปรียบเทียบสเปก"}
+            className={`absolute bottom-2 right-2 px-2.5 py-1 rounded-xl text-[10px] font-bold flex items-center gap-1.5 backdrop-blur-md transition-all duration-200 cursor-pointer shadow-md ${
+              inCompare
+                ? "bg-amber-500 text-slate-950 border border-amber-400 font-extrabold ring-2 ring-amber-400/40 scale-105"
+                : "bg-slate-900/75 hover:bg-slate-900/95 text-slate-200 hover:text-white border border-slate-700/80 active:scale-95"
+            }`}
+          >
+            {inCompare ? <CheckIcon size={11} /> : <CompareIcon size={12} />}
+            <span>{inCompare ? "เทียบอยู่" : "เทียบสเปก"}</span>
+          </button>
         </div>
 
         {/* Info Content */}

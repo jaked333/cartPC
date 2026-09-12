@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Product } from "@/types";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
+import { useCompare } from "@/context/CompareContext";
 import {
   XIcon,
   PlusIcon,
@@ -15,6 +16,7 @@ import {
   TruckIcon,
   SparklesIcon,
   EditIcon,
+  CompareIcon,
 } from "./Icons";
 
 interface ProductDetailModalProps {
@@ -34,10 +36,13 @@ export default function ProductDetailModal({
 }: ProductDetailModalProps) {
   const { user } = useAuth();
   const { addItem } = useCart();
+  const { isInCompare, toggleCompare, compareList, setIsOpen } = useCompare();
   const router = useRouter();
 
   const [quantity, setQuantity] = useState(1);
   const [justAdded, setJustAdded] = useState(false);
+
+  const inCompare = product ? isInCompare(product.id) : false;
 
   // Reset quantity when product changes
   useEffect(() => {
@@ -274,6 +279,41 @@ export default function ProductDetailModal({
                   </div>
                 </>
               )}
+
+              {/* Compare Button in Product Detail Modal */}
+              <div className="pt-2 flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => toggleCompare(product)}
+                  className={`flex-1 py-2.5 px-4 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all duration-150 cursor-pointer border ${
+                    inCompare
+                      ? "bg-amber-500 text-slate-950 border-amber-400 font-extrabold shadow-md shadow-amber-950/20 ring-2 ring-amber-400/40 scale-[1.01]"
+                      : "bg-slate-100 hover:bg-slate-200 text-slate-700 dark:bg-slate-800 dark:hover:bg-slate-750 dark:text-slate-200 border-slate-200 dark:border-slate-700 active:scale-98"
+                  }`}
+                >
+                  {inCompare ? <CheckIcon size={15} /> : <CompareIcon size={15} />}
+                  <span>
+                    {inCompare
+                      ? "สินค้านี้อยู่ในรายการเปรียบเทียบแล้ว (คลิกเพื่อยกเลิก)"
+                      : "เปรียบเทียบสเปกสินค้านี้ (Add to Compare)"}
+                  </span>
+                </button>
+
+                {compareList.length >= 2 && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onClose();
+                      setIsOpen(true);
+                    }}
+                    className="py-2.5 px-3.5 rounded-xl font-bold text-xs bg-red-600 hover:bg-red-700 text-white flex items-center gap-1.5 transition-all shadow-md shadow-red-950/30 cursor-pointer shrink-0"
+                    title="เปิดตารางเปรียบเทียบสเปกทันที"
+                  >
+                    <CompareIcon size={14} />
+                    <span>ดูตารางเทียบ ({compareList.length})</span>
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </div>

@@ -29,6 +29,17 @@ export interface Brand {
   slug: string;
 }
 
+export type UseCaseId = "gaming-1080p" | "creator-4k" | "mini-itx" | "esports";
+
+export interface UseCasePreset {
+  id: UseCaseId;
+  label: string;
+  icon: string;
+  badge: string;
+  description: string;
+  focusText: string;
+}
+
 export interface Product {
   id: string;
   name: string;
@@ -40,11 +51,12 @@ export interface Product {
   discountPercent?: number;
   stockQty: number;
   images: string[];
-  specs: Record<string, string>;
+  specs?: Record<string, string | number>;
   attributes: Record<string, string>;
   sku: string;
   isActive: boolean;
   salesCount?: number;
+  useCases?: UseCaseId[];
   createdAt: string;
 }
 
