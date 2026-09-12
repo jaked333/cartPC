@@ -43,6 +43,10 @@
   - Floating bottom toolbar with thumbnail previews and quick remove buttons.
   - Interactive comparison table modal dynamically extracting all unique specification keys.
   - One-click toggling directly on product cards with instant category constraint protection.
+- **Smart Use-Case Filtering (แท็บฟิลเตอร์แนะนำตามการใช้งานจริง)**:
+  - Curated quick-filter chips for non-tech-savvy users inspired by modern Thai PC retailers (iHAVECPU style).
+  - Presets: 🎮 เล่นเกม 1080p ลื่นๆ (งบประหยัด), 🎬 ตัดต่อวิดีโอ 4K / ทำงาน 3D, 📦 ไซส์กะทัดรัด (Mini-ITX), ⚡ Competitive E-Sports 240Hz+.
+  - Real-time toast alert pill feedback when selecting presets.
 - **Live Cart Drawer**:
   - Slide-out cart panel showing running totals, item counts, and quick quantity increments/decrements.
   - Smooth slide animations and empty-state guidance.
@@ -158,7 +162,8 @@ shopcon11/
 │   ├── ProductCard.tsx     # Product card with compare toggle, badges, and actions
 │   ├── ProductDetailModal.tsx # Detailed product specs & preview modal
 │   ├── ProductFilters.tsx  # Filter chips (Brand & attribute filters)
-│   └── Providers.tsx       # Unified context provider wrapper
+│   ├── Providers.tsx       # Unified context provider wrapper
+│   └── UseCaseChips.tsx    # Smart use-case preset filter chip bar
 ├── context/
 │   ├── AuthContext.tsx     # Role-based user state & demo auth
 │   ├── CartContext.tsx     # Cart storage & item manipulation

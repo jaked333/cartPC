@@ -152,6 +152,7 @@ export const SEED_PRODUCTS: Product[] = [
     sku: "CPU-AMD-7800X3D",
     isActive: true,
     salesCount: 142,
+    useCases: ["esports", "creator-4k"],
     createdAt: "2026-01-15T00:00:00Z",
   },
   {
@@ -178,6 +179,7 @@ export const SEED_PRODUCTS: Product[] = [
     sku: "CPU-INT-14700K",
     isActive: true,
     salesCount: 89,
+    useCases: ["creator-4k"],
     createdAt: "2026-01-18T00:00:00Z",
   },
   {
@@ -204,6 +206,7 @@ export const SEED_PRODUCTS: Product[] = [
     sku: "CPU-AMD-7600X",
     isActive: true,
     salesCount: 210,
+    useCases: ["gaming-1080p", "mini-itx"],
     createdAt: "2026-01-10T00:00:00Z",
   },
   // Mainboard
@@ -231,6 +234,7 @@ export const SEED_PRODUCTS: Product[] = [
     sku: "MB-ASUS-B650A",
     isActive: true,
     salesCount: 65,
+    useCases: ["gaming-1080p", "esports"],
     createdAt: "2026-02-01T00:00:00Z",
   },
   {
@@ -257,6 +261,7 @@ export const SEED_PRODUCTS: Product[] = [
     sku: "MB-MSI-B760-TH",
     isActive: true,
     salesCount: 92,
+    useCases: ["creator-4k"],
     createdAt: "2026-01-20T00:00:00Z",
   },
   // GPU
@@ -284,6 +289,7 @@ export const SEED_PRODUCTS: Product[] = [
     sku: "VGA-ASUS-4080S",
     isActive: true,
     salesCount: 34,
+    useCases: ["creator-4k", "esports"],
     createdAt: "2026-01-05T00:00:00Z",
   },
   {
@@ -310,6 +316,7 @@ export const SEED_PRODUCTS: Product[] = [
     sku: "VGA-GIGA-4070S",
     isActive: true,
     salesCount: 128,
+    useCases: ["creator-4k", "esports"],
     createdAt: "2026-01-12T00:00:00Z",
   },
   {
@@ -336,6 +343,7 @@ export const SEED_PRODUCTS: Product[] = [
     sku: "VGA-MSI-4060-V2X",
     isActive: true,
     salesCount: 195,
+    useCases: ["gaming-1080p", "mini-itx"],
     createdAt: "2026-01-22T00:00:00Z",
   },
   // RAM
@@ -363,6 +371,7 @@ export const SEED_PRODUCTS: Product[] = [
     sku: "RAM-COR-VENG-32G",
     isActive: true,
     salesCount: 174,
+    useCases: ["creator-4k", "esports"],
     createdAt: "2026-02-05T00:00:00Z",
   },
   {
@@ -389,6 +398,7 @@ export const SEED_PRODUCTS: Product[] = [
     sku: "RAM-KING-BEAST-16G",
     isActive: true,
     salesCount: 88,
+    useCases: ["gaming-1080p", "mini-itx"],
     createdAt: "2026-02-08T00:00:00Z",
   },
   // SSD
@@ -415,6 +425,7 @@ export const SEED_PRODUCTS: Product[] = [
     sku: "SSD-KING-KC3000-1T",
     isActive: true,
     salesCount: 260,
+    useCases: ["gaming-1080p", "mini-itx"],
     createdAt: "2026-01-14T00:00:00Z",
   },
   {
@@ -440,6 +451,7 @@ export const SEED_PRODUCTS: Product[] = [
     sku: "SSD-COR-MP600-2T",
     isActive: true,
     salesCount: 75,
+    useCases: ["creator-4k", "esports"],
     createdAt: "2026-01-25T00:00:00Z",
   },
   // PSU
@@ -465,6 +477,7 @@ export const SEED_PRODUCTS: Product[] = [
     sku: "PSU-COR-RM850E",
     isActive: true,
     salesCount: 115,
+    useCases: ["creator-4k", "esports"],
     createdAt: "2026-02-02T00:00:00Z",
   },
   {
@@ -489,6 +502,7 @@ export const SEED_PRODUCTS: Product[] = [
     sku: "PSU-MSI-A750GL",
     isActive: true,
     salesCount: 82,
+    useCases: ["gaming-1080p", "mini-itx"],
     createdAt: "2026-02-03T00:00:00Z",
   },
   // Case
@@ -508,6 +522,7 @@ export const SEED_PRODUCTS: Product[] = [
     sku: "CASE-LIAN-O11V-WH",
     isActive: true,
     salesCount: 140,
+    useCases: ["creator-4k"],
     createdAt: "2026-01-28T00:00:00Z",
   },
   // Cooling
@@ -527,6 +542,7 @@ export const SEED_PRODUCTS: Product[] = [
     sku: "COOL-LIAN-GA2-360W",
     isActive: true,
     salesCount: 52,
+    useCases: ["creator-4k", "esports"],
     createdAt: "2026-02-04T00:00:00Z",
   },
   // Mouse (with mouseType attribute)
@@ -553,6 +569,7 @@ export const SEED_PRODUCTS: Product[] = [
     sku: "MOU-LOGI-GPX2-BK",
     isActive: true,
     salesCount: 310,
+    useCases: ["esports"],
     createdAt: "2026-01-10T00:00:00Z",
   },
   {
@@ -578,6 +595,7 @@ export const SEED_PRODUCTS: Product[] = [
     sku: "MOU-RAZ-VIPV3P-WH",
     isActive: true,
     salesCount: 180,
+    useCases: ["esports", "mini-itx"],
     createdAt: "2026-02-10T00:00:00Z",
   },
   {
@@ -603,6 +621,7 @@ export const SEED_PRODUCTS: Product[] = [
     sku: "MOU-LOGI-G502X-WD",
     isActive: true,
     salesCount: 145,
+    useCases: ["gaming-1080p"],
     createdAt: "2026-01-19T00:00:00Z",
   },
   // Keyboard (with switchType attribute)
@@ -629,6 +648,7 @@ export const SEED_PRODUCTS: Product[] = [
     sku: "KB-LOGI-GPXTKL-BR",
     isActive: true,
     salesCount: 98,
+    useCases: ["esports", "mini-itx"],
     createdAt: "2026-02-01T00:00:00Z",
   },
   {
@@ -654,6 +674,7 @@ export const SEED_PRODUCTS: Product[] = [
     sku: "KB-RAZ-HUNTV3-TKL",
     isActive: true,
     salesCount: 165,
+    useCases: ["esports", "mini-itx"],
     createdAt: "2026-01-29T00:00:00Z",
   },
   {
@@ -679,6 +700,7 @@ export const SEED_PRODUCTS: Product[] = [
     sku: "KB-COR-K70PRO-RED",
     isActive: true,
     salesCount: 112,
+    useCases: ["gaming-1080p", "creator-4k"],
     createdAt: "2026-01-16T00:00:00Z",
   },
 ];

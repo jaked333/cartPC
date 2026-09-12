@@ -12,17 +12,22 @@ import {
   SEED_CATEGORIES,
   SEED_BRANDS,
 } from "@/data/seed";
-import { SortOption, Product } from "@/types";
+import { SortOption, Product, UseCaseId } from "@/types";
+import UseCaseChips, { USE_CASE_PRESETS } from "@/components/UseCaseChips";
 import {
   ShieldCheckIcon,
   SparklesIcon,
   getCategoryIcon,
   SearchIcon,
+  CheckIcon,
+  XIcon,
 } from "@/components/Icons";
 
 export default function StorefrontPage() {
   const { products } = useProducts();
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
+  const [selectedUseCase, setSelectedUseCase] = useState<UseCaseId | null>(null);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOption, setSortOption] = useState<SortOption>("recommended");
   const [selectedBrandIds, setSelectedBrandIds] = useState<string[]>([]);
@@ -71,6 +76,11 @@ export default function StorefrontPage() {
       list = list.filter((p) => p.categoryId === selectedCategoryId);
     }
 
+    // 1.5. Use-Case filter
+    if (selectedUseCase) {
+      list = list.filter((p) => p.useCases && p.useCases.includes(selectedUseCase));
+    }
+
     // 2. Search query filter
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase().trim();
@@ -116,6 +126,7 @@ export default function StorefrontPage() {
     return list;
   }, [
     selectedCategoryId,
+    selectedUseCase,
     searchQuery,
     selectedBrandIds,
     selectedAttributeValue,
@@ -138,10 +149,25 @@ export default function StorefrontPage() {
     setSelectedAttributeValue(null);
   };
 
+  const handleSelectUseCase = (useCaseId: UseCaseId | null) => {
+    setSelectedUseCase(useCaseId);
+    if (useCaseId) {
+      const preset = USE_CASE_PRESETS.find((p) => p.id === useCaseId);
+      setToastMessage(`คัดสรรตามการใช้งาน: ${preset?.label || useCaseId}`);
+    } else {
+      setToastMessage("แสดงสินค้าอุปกรณ์คอมพิวเตอร์ทั้งหมด");
+    }
+    // Auto-dismiss notification after 3.5s
+    setTimeout(() => {
+      setToastMessage(null);
+    }, 3500);
+  };
+
   const handleClearFilters = () => {
     setSearchQuery("");
     setSelectedBrandIds([]);
     setSelectedAttributeValue(null);
+    setSelectedUseCase(null);
     setSortOption("recommended");
   };
 
@@ -149,12 +175,32 @@ export default function StorefrontPage() {
     searchQuery.trim().length > 0 ||
     selectedBrandIds.length > 0 ||
     selectedAttributeValue !== null ||
+    selectedUseCase !== null ||
     sortOption !== "recommended";
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-[#0b1120] text-slate-800 dark:text-slate-100 transition-colors">
       {/* Top Navbar */}
       <Navbar />
+
+      {/* Toast Notification (iHAVECPU Style Alert Pill) */}
+      {toastMessage && (
+        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 animate-in fade-in slide-in-from-top-3 duration-200 pointer-events-auto">
+          <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-emerald-500/40 text-slate-800 dark:text-slate-100 px-4 py-2 rounded-full shadow-xl shadow-black/20 flex items-center gap-2.5 text-xs font-bold">
+            <span className="w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[10px]">
+              ✓
+            </span>
+            <span>{toastMessage}</span>
+            <button
+              type="button"
+              onClick={() => setToastMessage(null)}
+              className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 ml-1 cursor-pointer"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Main Content Area */}
       <main className="flex-1 max-w-[1440px] w-full mx-auto px-4 sm:px-6 py-6">
@@ -205,6 +251,13 @@ export default function StorefrontPage() {
                 </span>
               </div>
             </div>
+
+            {/* Smart Use-Case Preset Chips (iHAVECPU Style) */}
+            <UseCaseChips
+              selectedUseCase={selectedUseCase}
+              onSelectUseCase={handleSelectUseCase}
+              filteredCount={filteredProducts.length}
+            />
 
             {/* Filter Bar (Search, Sort, Brand Chips, Attribute Chips) */}
             <ProductFilters
