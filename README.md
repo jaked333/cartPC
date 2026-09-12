@@ -1,36 +1,199 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🖥️ ShopControl — PC Parts E-Commerce & Inventory Management System
 
-## Getting Started
+[![Next.js](https://img.shields.io/badge/Next.js-16.3.5-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19.2.8-149eca?style=for-the-badge&logo=react)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178c6?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38bdf8?style=for-the-badge&logo=tailwindcss)](https://tailwindcss.com/)
+[![License](https://img.shields.io/badge/License-MIT-emerald?style=for-the-badge)](LICENSE)
 
-First, run the development server:
+> **ShopControl** is a modern, full-stack, responsive PC components retail storefront and administrative management portal built with **Next.js 16 (App Router)**, **React 19**, **TypeScript**, and **Tailwind CSS v4**.
+>
+> ระบบซื้อขายและจัดการคลังอุปกรณ์คอมพิวเตอร์ออนไลน์ ดีไซน์ทันสมัย รองรับ Dark / Light Mode เต็มรูปแบบ พร้อมระบบแยกสิทธิ์ Admin และ Customer
 
+---
+
+## 📑 Table of Contents (สารบัญ)
+- [✨ Key Features](#-key-features)
+  - [🛒 Storefront & Shopping Experience](#-storefront--shopping-experience)
+  - [🌓 Dark / Light Mode System](#-dark--light-mode-system)
+  - [🔐 Authentication & Role Separation](#-authentication--role-separation)
+  - [⚙️ Admin Management Portal](#️-admin-management-portal)
+  - [📦 Customer Order Tracking](#-customer-order-tracking)
+- [👥 Demo Accounts (บัญชีทดสอบ)](#-demo-accounts-บัญชีทดสอบ)
+- [🛠️ Tech Stack](#️-tech-stack)
+- [🚀 Quick Start (เริ่มต้นใช้งาน)](#-quick-start-เริ่มต้นใช้งาน)
+- [📂 Project Structure (โครงสร้างโฟลเดอร์)](#-project-structure-โครงสร้างโฟลเดอร์)
+- [📤 How to Push to Your GitHub](#-how-to-push-to-your-github)
+- [📄 License](#-license)
+
+---
+
+## ✨ Key Features
+
+### 🛒 Storefront & Shopping Experience
+- **Interactive Product Catalog**: Browse curated PC parts spanning 10+ categories (CPU, GPU, Mainboard, RAM, SSD/M.2, PSU, Case, Cooling, Gaming Gear, Mouse, Keyboard).
+- **Search & Advanced Filtering**:
+  - Live, instant search by product name, model, or brand.
+  - Multi-select brand filters (ASUS, MSI, Gigabyte, Intel, AMD, Corsair, Razer, Logitech, Kingston, etc.).
+  - Category-specific attribute filtering (e.g. Mouse Type: Wired / Wireless).
+- **Multi-Option Sorting**: Sort products by price (Low to High, High to Low), newest arrivals, or best-sellers.
+- **Detailed Product Modal**: Click any product card to view a dedicated modal showing high-definition imagery, full technical specifications table, stock availability status, and pricing breakdown.
+- **Live Cart Drawer**:
+  - Slide-out cart panel showing running totals, item counts, and quick quantity increments/decrements.
+  - Smooth slide animations and empty-state guidance.
+- **Streamlined Checkout**:
+  - Enter shipping and contact details.
+  - Simulated payment flow with instant order confirmation and redirection to order tracking.
+
+### 🌓 Dark / Light Mode System
+- Complete dark/light mode toggle with theme persistence in `localStorage`.
+- Handcrafted custom SVG icons designed to automatically invert and harmonize between modes.
+- Eye-friendly zinc/slate dark palette with bright amber and cyan accent highlights.
+
+### 🔐 Authentication & Role Separation
+- Role-based authentication: `customer` vs. `admin`.
+- Custom authentication context with persistent session simulation.
+- **Accidental Sign-Out Protection**: A styled modal asks for user confirmation before logging out.
+- **Smooth Loading States**: Tactile button feedback with animated spinners on both Login and Registration forms.
+
+### ⚙️ Admin Management Portal (`/admin`)
+- **Restricted Access**: Customers cannot access the admin portal; non-admin users are automatically redirected.
+- **Admin Shopping Safeguard**: Admins cannot add items to the cart or place consumer orders (action buttons are disabled with clear admin tooltips).
+- **Live Product Editing**:
+  - Admins can rename products and adjust prices on the fly directly from the storefront cards or admin dashboard.
+  - Changes instantly reflect across the entire catalog and cart state.
+- **Customer-Grouped Orders Management**:
+  - View incoming orders organized and grouped cleanly by customer name and contact info.
+  - Summary metrics: total spend per customer and itemized breakdown.
+  - Status pipeline controller: update order statuses across `Pending`, `Processing`, `Shipped`, `Completed`, and `Cancelled`.
+
+### 📦 Customer Order Tracking (`/orders`)
+- Logged-in customers can review their complete order history.
+- Real-time status indicators (badge colors reflect current dispatch state).
+- Detailed shipping address records and item summaries.
+
+---
+
+## 👥 Demo Accounts (บัญชีทดสอบ)
+
+You can use these pre-seeded accounts to explore both roles:
+
+| Role | Email | Password | Permissions |
+| :--- | :--- | :--- | :--- |
+| 🛡️ **Admin** | `admin@pcshop.co.th` | `admin1234` | Edit product names & prices, manage all orders, update status |
+| 🛍️ **Customer** | `customer@pcshop.co.th` | `user1234` | Browse catalog, add to cart, checkout, view order history |
+
+> *Note: You can also register a new customer account anytime via the `/register` page.*
+
+---
+
+## 🛠️ Tech Stack
+
+- **Framework**: [Next.js 16.3.5](https://nextjs.org/) (App Router, Turbopack)
+- **Library**: [React 19.2.8](https://react.dev/)
+- **Language**: [TypeScript 5.x](https://www.typescriptlang.org/)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/) with custom dark mode variants
+- **Icons**: Custom responsive SVG icons (`components/Icons.tsx`)
+- **State Management**: React Context API (`ThemeContext`, `AuthContext`, `ProductContext`, `OrderContext`, `CartContext`)
+- **Image Optimization**: `next/image` with remote domains (Unsplash CDN) and local public assets
+
+---
+
+## 🚀 Quick Start (เริ่มต้นใช้งาน)
+
+### 1. Clone the repository
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/jaked333/cartPC.git
+cd cartPC
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install dependencies
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Run the development server
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Learn More
+### 4. Build for production
+```bash
+npm run build
+npm run start
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📂 Project Structure (โครงสร้างโฟลเดอร์)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```text
+shopcon11/
+├── app/
+│   ├── admin/              # Admin dashboard (Order management & Product editor)
+│   ├── login/              # Login page with smooth spinner feedback
+│   ├── orders/             # Customer order history & tracking
+│   ├── register/           # Customer registration page
+│   ├── globals.css         # Tailwind v4 configuration & theme styles
+│   ├── layout.tsx          # Root layout wrapping Context Providers
+│   └── page.tsx            # Main storefront (Catalog, Category filters, Search)
+├── components/
+│   ├── CartDrawer.tsx      # Slide-out shopping cart & checkout modal
+│   ├── CategorySidebar.tsx # Category navigation with active state
+│   ├── EditProductModal.tsx# Admin live product rename & price adjust modal
+│   ├── Icons.tsx           # Handcrafted SVG icons with dark mode support
+│   ├── LogoutConfirmModal.tsx # Sign-out confirmation dialog
+│   ├── Navbar.tsx          # Top bar (Search, Theme switch, Cart badge, Auth)
+│   ├── ProductCard.tsx     # Product card with badges, price, and actions
+│   ├── ProductDetailModal.tsx # Detailed product specs & preview modal
+│   ├── ProductFilters.tsx  # Filter chips (Brand & attribute filters)
+│   └── Providers.tsx       # Unified context provider wrapper
+├── context/
+│   ├── AuthContext.tsx     # Role-based user state & demo auth
+│   ├── CartContext.tsx     # Cart storage & item manipulation
+│   ├── OrderContext.tsx    # Order pipeline & status management
+│   ├── ProductContext.tsx  # Live product catalog & pricing updater
+│   └── ThemeContext.tsx    # Dark/Light mode provider with persistence
+├── data/
+│   └── seed.ts             # 22+ PC parts seed data with specs & distinct images
+├── public/
+│   └── products/           # Local lightweight product assets
+├── types/
+│   └── index.ts            # TypeScript interfaces (Product, Category, Order, User)
+├── package.json
+└── tsconfig.json
+```
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📤 How to Push to Your GitHub
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Follow these steps in your terminal to publish this repository to your GitHub:
+
+```bash
+# 1. Initialize git (if not already initialized)
+git init
+
+# 2. Stage all files
+git add .
+
+# 3. Create your initial commit
+git commit -m "feat: complete PC Parts E-Commerce & Management System"
+
+# 4. Rename branch to main
+git branch -M main
+
+# 5. Add your GitHub remote repository
+git remote add origin https://github.com/jaked333/cartPC.git
+
+# 6. Push to GitHub
+git push -u origin main
+```
+
+---
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
