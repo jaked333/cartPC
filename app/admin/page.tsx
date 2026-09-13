@@ -9,6 +9,8 @@ import { useProducts } from "@/context/ProductContext";
 import { OrderStatus, Order, Product } from "@/types";
 import LogoutConfirmModal from "@/components/LogoutConfirmModal";
 import EditProductModal from "@/components/EditProductModal";
+import AddProductModal from "@/components/AddProductModal";
+import DeleteProductConfirmModal from "@/components/DeleteProductConfirmModal";
 import {
   ShieldCheckIcon,
   PackageIcon,
@@ -26,15 +28,19 @@ import {
   MoonIcon,
   LogOutIcon,
   EditIcon,
+  PlusIcon,
+  TrashIcon,
 } from "@/components/Icons";
 
 export default function AdminPage() {
   const { user, getAllUsers, logout } = useAuth();
   const { orders, updateOrderStatus } = useOrders();
-  const { products } = useProducts();
+  const { products, deleteProduct } = useProducts();
   const { theme, isDark, toggleTheme } = useTheme();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [deletingProduct, setDeletingProduct] = useState<Product | null>(null);
 
   const [activeTab, setActiveTab] = useState<"by-user" | "all-orders" | "products">("by-user");
   const [searchQuery, setSearchQuery] = useState("");
@@ -651,12 +657,22 @@ export default function AdminPage() {
                   จัดการชื่อและราคาสินค้า (Admin Product Management)
                 </h3>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                  แก้ไขชื่อสินค้า และปรับเปลี่ยนราคาได้ทันที โดยจะแสดงผลไปยังหน้าร้านค้าโดยอัตโนมัติ
+                  แก้ไขชื่อสินค้า ปรับเปลี่ยนราคา และเพิ่ม/ลบสินค้าได้ทันที โดยจะแสดงผลไปยังหน้าร้านค้าโดยอัตโนมัติ
                 </p>
               </div>
-              <span className="text-xs font-semibold px-3 py-1 rounded-full bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60 self-start sm:self-auto">
-                ทั้งหมด {filteredAdminProducts.length} รายการ
-              </span>
+              <div className="flex items-center gap-2.5 self-start sm:self-auto">
+                <span className="text-xs font-semibold px-3 py-1 rounded-full bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60">
+                  ทั้งหมด {filteredAdminProducts.length} รายการ
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setIsAddModalOpen(true)}
+                  className="px-3.5 py-1.5 rounded-xl bg-red-600 hover:bg-red-700 active:scale-95 text-white font-bold text-xs flex items-center gap-1.5 shadow-md shadow-red-500/20 cursor-pointer transition-all duration-150"
+                >
+                  <PlusIcon size={14} />
+                  <span>+ เพิ่มสินค้าใหม่</span>
+                </button>
+              </div>
             </div>
 
             <div className="overflow-x-auto">
@@ -719,13 +735,26 @@ export default function AdminPage() {
                         )}
                       </td>
                       <td className="py-3 px-4 text-center">
-                        <button
-                          onClick={() => setEditingProduct(prod)}
-                          className="px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 active:scale-95 text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow-xs cursor-pointer transition-all duration-150 mx-auto"
-                        >
-                          <EditIcon size={14} />
-                          <span>แก้ไขชื่อ/ราคา</span>
-                        </button>
+                        <div className="flex items-center justify-center gap-1.5">
+                          <button
+                            type="button"
+                            onClick={() => setEditingProduct(prod)}
+                            className="px-2.5 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 active:scale-95 text-slate-950 font-bold text-xs flex items-center gap-1 shadow-xs cursor-pointer transition-all duration-150"
+                            title="แก้ไขชื่อและราคา"
+                          >
+                            <EditIcon size={13} />
+                            <span>แก้ไข</span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setDeletingProduct(prod)}
+                            className="px-2.5 py-1.5 rounded-xl bg-red-100 hover:bg-red-200 dark:bg-red-950/60 dark:hover:bg-red-900/80 text-red-600 dark:text-red-400 font-bold text-xs flex items-center gap-1 border border-red-200 dark:border-red-900/60 active:scale-95 cursor-pointer transition-all duration-150"
+                            title="ลบสินค้าออกจากระบบ"
+                          >
+                            <TrashIcon size={13} />
+                            <span>ลบ</span>
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -752,6 +781,25 @@ export default function AdminPage() {
         isOpen={!!editingProduct}
         product={editingProduct}
         onClose={() => setEditingProduct(null)}
+      />
+
+      {/* Admin Add Product Modal */}
+      <AddProductModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+      />
+
+      {/* Admin Delete Confirm Modal */}
+      <DeleteProductConfirmModal
+        isOpen={!!deletingProduct}
+        product={deletingProduct}
+        onCancel={() => setDeletingProduct(null)}
+        onConfirm={() => {
+          if (deletingProduct) {
+            deleteProduct(deletingProduct.id);
+            setDeletingProduct(null);
+          }
+        }}
       />
     </div>
   );
