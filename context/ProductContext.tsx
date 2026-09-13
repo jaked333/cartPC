@@ -4,26 +4,8 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { Product } from "@/types";
 import { SEED_PRODUCTS } from "@/data/seed";
 
-export interface NewProductInput {
-  name: string;
-  description: string;
-  categoryId: string;
-  brandId: string;
-  price: number;
-  originalPrice?: number;
-  stockQty?: number;
-  images?: string[];
-  sku?: string;
-  attributes?: Record<string, string>;
-  specs?: Record<string, string | number>;
-  useCases?: ("gaming-1080p" | "creator-4k" | "mini-itx" | "esports")[];
-  isActive?: boolean;
-}
-
 interface ProductContextType {
   products: Product[];
-  addProduct: (input: NewProductInput | Product) => Product;
-  deleteProduct: (id: string) => void;
   updateProduct: (
     id: string,
     updates: { name?: string; price?: number; originalPrice?: number }
@@ -33,113 +15,48 @@ interface ProductContextType {
 
 const ProductContext = createContext<ProductContextType | undefined>(undefined);
 
-const STORAGE_KEY = "pcshop_products_v3";
+const STORAGE_KEY = "pcshop_products_v2";
 
 export function ProductProvider({ children }: { children: React.ReactNode }) {
   const [products, setProducts] = useState<Product[]>(SEED_PRODUCTS);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Load persisted products from localStorage
+  // Load persisted product changes from localStorage
   useEffect(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
         const parsed: Product[] = JSON.parse(stored);
-        if (Array.isArray(parsed)) {
-          setProducts(parsed);
-          setIsLoaded(true);
-          return;
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          // Merge with SEED_PRODUCTS to ensure image URLs and specs remain consistent
+          const merged = SEED_PRODUCTS.map((seedP) => {
+            const match = parsed.find((p) => p.id === seedP.id);
+            if (match) {
+              return {
+                ...seedP,
+                name: match.name || seedP.name,
+                price: match.price !== undefined ? match.price : seedP.price,
+                originalPrice:
+                  match.originalPrice !== undefined
+                    ? match.originalPrice
+                    : seedP.originalPrice,
+                discountPercent:
+                  match.discountPercent !== undefined
+                    ? match.discountPercent
+                    : seedP.discountPercent,
+              };
+            }
+            return seedP;
+          });
+          setProducts(merged);
         }
-      }
-      // If no stored v3 products, initialize with SEED_PRODUCTS
-      setProducts(SEED_PRODUCTS);
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(SEED_PRODUCTS));
-      } catch (err) {
-        console.error("Failed to seed initial products to localStorage", err);
       }
     } catch (e) {
       console.error("Failed to load products from localStorage", e);
-      setProducts(SEED_PRODUCTS);
     } finally {
       setIsLoaded(true);
     }
   }, []);
-
-  // Add a new product to catalog
-  const addProduct = (input: NewProductInput | Product): Product => {
-    const rawPrice = Number(input.price) || 0;
-    const rawOriginalPrice =
-      input.originalPrice !== undefined && Number(input.originalPrice) > 0
-        ? Number(input.originalPrice)
-        : rawPrice;
-
-    const discountPercent =
-      rawOriginalPrice > rawPrice && rawOriginalPrice > 0
-        ? Math.round(((rawOriginalPrice - rawPrice) / rawOriginalPrice) * 100)
-        : 0;
-
-    const fallbackImage =
-      "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=600&auto=format&fit=crop&q=80";
-
-    const newProd: Product = {
-      id:
-        "id" in input && input.id
-          ? input.id
-          : `prod-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
-      name: input.name.trim(),
-      description: input.description?.trim() || "สินค้าไอทีคุณภาพแท้ 100% รับประกันศูนย์ไทย",
-      categoryId: input.categoryId || "cat-cpu",
-      brandId: input.brandId || "b-asus",
-      price: rawPrice,
-      originalPrice: rawOriginalPrice >= rawPrice ? rawOriginalPrice : rawPrice,
-      discountPercent: discountPercent,
-      stockQty: input.stockQty !== undefined ? Number(input.stockQty) : 10,
-      images:
-        input.images && input.images.length > 0 && input.images[0].trim()
-          ? input.images
-          : [fallbackImage],
-      sku:
-        input.sku?.trim() ||
-        `SKU-${Math.random().toString(36).substring(2, 7).toUpperCase()}-${Math.floor(
-          100 + Math.random() * 900
-        )}`,
-      attributes: input.attributes || {},
-      specs: input.specs || {},
-      useCases: input.useCases || [],
-      isActive: input.isActive !== undefined ? input.isActive : true,
-      salesCount: "salesCount" in input && typeof input.salesCount === "number" ? input.salesCount : 0,
-      createdAt:
-        "createdAt" in input && input.createdAt
-          ? input.createdAt
-          : new Date().toISOString(),
-    };
-
-    setProducts((prev) => {
-      const next = [newProd, ...prev];
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-      } catch (e) {
-        console.error("Failed to save products after add", e);
-      }
-      return next;
-    });
-
-    return newProd;
-  };
-
-  // Delete product from catalog
-  const deleteProduct = (id: string) => {
-    setProducts((prev) => {
-      const next = prev.filter((p) => p.id !== id);
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-      } catch (e) {
-        console.error("Failed to save products after delete", e);
-      }
-      return next;
-    });
-  };
 
   // Update product name, price, and recalculate discount
   const updateProduct = (
@@ -190,22 +107,14 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
   const resetProducts = () => {
     setProducts(SEED_PRODUCTS);
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(SEED_PRODUCTS));
+      localStorage.removeItem(STORAGE_KEY);
     } catch (e) {
       console.error("Failed to reset products", e);
     }
   };
 
   return (
-    <ProductContext.Provider
-      value={{
-        products,
-        addProduct,
-        deleteProduct,
-        updateProduct,
-        resetProducts,
-      }}
-    >
+    <ProductContext.Provider value={{ products, updateProduct, resetProducts }}>
       {children}
     </ProductContext.Provider>
   );
@@ -218,3 +127,4 @@ export function useProducts() {
   }
   return context;
 }
+

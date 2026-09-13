@@ -165,7 +165,7 @@ export const SEED_PRODUCTS: Product[] = [
     price: 15990,
     discountPercent: 9,
     stockQty: 12,
-    images: ["https://images.unsplash.com/photo-1555680202-c86f0e12f086?w=400&auto=format&fit=crop&q=70"],
+    images: ["/products/intel-i7-14700k.png"],
     specs: {
       "Socket": "LGA1700",
       "Cores / Threads": "20C / 28T",
@@ -192,7 +192,7 @@ export const SEED_PRODUCTS: Product[] = [
     price: 7990,
     discountPercent: 16,
     stockQty: 25,
-    images: ["https://images.unsplash.com/photo-1563770660941-20978e870e26?w=400&auto=format&fit=crop&q=70"],
+    images: ["/products/amd-ryzen-5-7600x.png"],
     specs: {
       "Socket": "AM5",
       "Cores / Threads": "6C / 12T",

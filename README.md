@@ -151,12 +151,10 @@ shopcon11/
 │   ├── layout.tsx          # Root layout wrapping Context Providers
 │   └── page.tsx            # Main storefront (Catalog, Category filters, Search)
 ├── components/
-│   ├── AddProductModal.tsx # Admin full product creation modal with live preview & presets
 │   ├── CartDrawer.tsx      # Slide-out shopping cart & checkout modal
 │   ├── CategorySidebar.tsx # Category navigation with active state
 │   ├── CompareFloatingBar.tsx # Floating bottom bar with thumbnail selection
 │   ├── CompareModal.tsx    # Side-by-side technical spec comparison table modal
-│   ├── DeleteProductConfirmModal.tsx # Admin delete confirmation dialog
 │   ├── EditProductModal.tsx# Admin live product rename & price adjust modal
 │   ├── Icons.tsx           # Handcrafted SVG icons with dark mode support
 │   ├── LogoutConfirmModal.tsx # Sign-out confirmation dialog
@@ -164,6 +162,7 @@ shopcon11/
 │   ├── ProductCard.tsx     # Product card with compare toggle, badges, and actions
 │   ├── ProductDetailModal.tsx # Detailed product specs & preview modal
 │   ├── ProductFilters.tsx  # Filter chips (Brand & attribute filters)
+│   └── Providers.tsx       # Unified context provider wrapper
 │   ├── Providers.tsx       # Unified context provider wrapper
 │   └── UseCaseChips.tsx    # Smart use-case preset filter chip bar
 ├── context/
